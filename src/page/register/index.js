@@ -1,64 +1,114 @@
-import React, { useState , useEffect} from 'react'
+import { CircularProgress } from '@material-ui/core'
+import React, { useState, useEffect } from 'react'
+import useFormValides from '../../hook/useFormValides'
 
 export default function Register() {
+  let [laoding, setLoading] = useState(false)
 
-  const [form, setForm] = useState({
+  let {form ,error,inputChange,submit } = useFormValides({
     userName: '',
     phone: '',
     email: '',
     fb: ''
+  }, {
+    rule: {
+      userName: {
+        required: true
+      },
+      phone: {
+        pattern: 'phone'
+      },
+      email: {
+        pattern: 'email'
+      },
+      fb: {
+        pattern: 'fb'
+      }
+    },
+    massage: {
+      userName: {
+        required: "họ và tên không được để trống"
+      },
+      phone: {
+        pattern: "sdt không đúng định dạng"
+      },
+      email: {
+        pattern: "email không đúng định dạng"
+      },
+      fb: {
+        pattern: "fb không đúng định dạng"
+      }
+    }
   })
+  // const [form, setForm] = useState({
+  //   userName: '',
+  //   phone: '',
+  //   email: '',
+  //   fb: ''
+  // })
 
-  useEffect(() => {
-    function danh() {
-      console.log(form)
-    }
-    console.log('sẽ render 1 lần khi khởi tạo component')
-    window.addEventListener('click',danh
-    )
-    return () =>{
-      console.log('sẽ render 1 lần khi hủy hoại component')
-      window.removeEventListener('click', danh )
-    }
-  },[form]) //khi mà tham số phụ thuộc thay đôi thì sẽ chạy lại useEffect một lần
+  // useEffect(() => {
+  //   function danh() {
+  //     console.log(form)
+  //   }
+  //   console.log('sẽ render 1 lần khi khởi tạo component')
+  //   window.addEventListener('click', danh
+  //   )
+  //   return () => {
+  //     console.log('sẽ render 1 lần khi hủy hoại component')
+  //     window.removeEventListener('click', danh)
+  //   }
+  // }, [form]) //khi mà tham số phụ thuộc thay đôi thì sẽ chạy lại useEffect một lần
 
 
-  let [error, setError] = useState({})
+  // let [error, setError] = useState({})
 
-  function onchange(event) {
-    let target = event.target;
-    let val = target.value;
-    let name = target.getAttribute('name');
-    form[name] = val
-    setForm({
-      ...form,
-      // [event.target.getAttribute('name')]: event.target.value  ""cách viết ngắn hơn""
+  // function inputChange(event) {
+  //   // let target = event.target;
+  //   // let val = target.value;
+  //   // let name = target.getAttribute('name');
+  //   // form[name] = val
+  //   setForm({
+  //     ...form,
+  //     [event.target.getAttribute('name')]: event.target.value  //""cách viết ngắn hơn""
 
-    })
-  }
-  function submit() {
-    let error = {}
-    if (!form.userName) {
-      error['userName'] = "Uesername không được để  trống "
-    }
-    if (!form.phone) {
-      error['phone'] = "phone không được để  trống "
-    } else if (!/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/.test(form.phone)) {
-      error['phone'] = "phone không đúng định dạng"
-    }
-    if (!form.email) {
-      error['email'] = "email không được để  trống "
-    } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(form.email)) {
-      error['email'] = "email không đúng định dạng"
-    }
-    if (!form.fb) {
-      error['fb'] = "fb không được để  trống "
-    } else if (!/(?:https?:\/\/)?(?:www\.)?facebook\.com\/.(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*([\w\-\.]*)/.test(form.fb)) {
-      error['fb'] = "fb không đúng định dạng"
-    }
-    setError(error)
+  //   })
+  // }
+  function inputSubmit() {
+    
+    // if (laoding) {
+    //   alert('bạn không thể gửi liên tục')
+    //   return;
+    // }
+    // let error = {}
+    // if (!form.userName) {
+    //   error['userName'] = "Uesername không được để  trống "
+    // }
+    // if (!form.phone) {
+    //   error['phone'] = "phone không được để  trống "
+    // } else if (!/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/.test(form.phone)) {
+    //   error['phone'] = "phone không đúng định dạng"
+    // }
+    // if (!form.email) {
+    //   error['email'] = "email không được để  trống "
+    // } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(form.email)) {
+    //   error['email'] = "email không đúng định dạng"
+    // }
+    // if (!form.fb) {
+    //   error['fb'] = "fb không được để  trống "
+    // } else if (!/(?:https?:\/\/)?(?:www\.)?facebook\.com\/.(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*([\w\-\.]*)/.test(form.fb)) {
+    //   error['fb'] = "fb không đúng định dạng"
+    // }
+    // setError(error)
+    let error = submit();
+    
     if (Object.keys(error).length == 0) {
-      alert('thành công')
+      setLoading(true)
+      setTimeout(() => {
+        alert('đăng ký thành công')
+        setLoading(false)
+      }, 1000)
+
     }
 
   }
@@ -79,28 +129,28 @@ export default function Register() {
               <div className="form">
                 <label>
                   <p>Họ và tên<span>*</span></p>
-                  <input type="text" placeholder="Họ và tên bạn" onChange={onchange} name="userName" value={form.userName} />
+                  <input type="text" placeholder="Họ và tên bạn" onChange={inputChange} name="userName" value={form.userName} />
                 </label>
                 {
                   error.userName && <p className="error" style={{ 'color': 'red' }}>{error.userName}</p>
                 }
                 <label>
                   <p>Số điện thoại<span>*</span></p>
-                  <input type="text" placeholder="Số điện thoại" onChange={onchange} name="phone" value={form.phone} />
+                  <input type="text" placeholder="Số điện thoại" onChange={inputChange} name="phone" value={form.phone} />
                 </label>
                 {
                   error.phone && <p className="error" style={{ 'color': 'red' }}>{error.phone}</p>
                 }
                 <label>
                   <p>Email<span>*</span></p>
-                  <input type="text" placeholder="Email của bạn" onChange={onchange} name="email" value={form.email} />
+                  <input type="text" placeholder="Email của bạn" onChange={inputChange} name="email" value={form.email} />
                 </label>
                 {
                   error.email && <p className="error" style={{ 'color': 'red' }}>{error.email}</p>
                 }
                 <label>
                   <p>URL Facebook<span>*</span></p>
-                  <input type="text" placeholder="https://facebook.com" onChange={onchange} name="fb" value={form.fb} />
+                  <input type="text" placeholder="https://facebook.com" onChange={inputChange} name="fb" value={form.fb} />
                 </label>
                 {
                   error.fb && <p className="error" style={{ 'color': 'red' }}>{error.fb}</p>
@@ -129,7 +179,7 @@ export default function Register() {
                   <p>Ý kiến cá nhân</p>
                   <input type="text" placeholder="Mong muốn cá nhân và lịch bạn có thể học." />
                 </label>
-                <div className="btn main rect" onClick={submit}  >đăng ký</div>
+                <div className="btn main rect" onClick={inputSubmit}>đăng ký {laoding && <CircularProgress size={20} style={{ marginLeft: 20 }} />}</div>
               </div>
             </div>
           </div>
