@@ -7,7 +7,7 @@ export default function Register() {
 
   let {form ,error,inputChange,submit } = useFormValides({
     userName: '',
-    phone: '',
+    phone: '',  
     email: '',
     fb: ''
   }, {

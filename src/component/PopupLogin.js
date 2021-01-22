@@ -41,7 +41,7 @@ export default function PopupLogin() {
             </div>
           </div>
           {/* email form */}
-          <div className="ct_email">
+          {/* <div className="ct_email">
             <h2 className="title">Đặt lại mật khẩu</h2>
             <input type="text" placeholder="Email" />
             <div className="btn rect main btn-next">Tiếp theo</div>
@@ -49,7 +49,7 @@ export default function PopupLogin() {
             <div className="close">
               <img src="/img/close-icon.png" alt="" />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="popup-form popup-login" style={{ display: 'none' }}>

@@ -1,4 +1,4 @@
-.loading {
+.pageLoading {
     top: 0;
     left: 0;
     z-index: 10000;
@@ -7,22 +7,15 @@
     align-items: center;
     width: 100vw;
     height: 100vh;
-    visibility: hidden;
     pointer-events: none;
     position: fixed;
-    transition: all 1s ease-in-out;
     >div {
-        width: 0px;
-        height: 0px;
-        background: black;
-        border-radius: 100%;
-        transition: all 1s ease-in-out;
-    }
-    &.active {
-        visibility: visible;
-        >div {
-            width: 10000px;
-            height: 10000px;
-        }
+        width: 100px;
+        height: 100px;
+        background:#00afab;
+        border-radius: 10000px;
+        transition: all .6s ease-in-out;
+        position: absolute;
+        transform: scale(0);
     }
 }
