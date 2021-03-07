@@ -1,4 +1,4 @@
-import React from 'react'
+import React ,{useEffect, useState} from 'react'
 import Banner from './components/Banner'
 import CourseList from './components/CourseList'
 import Gallery from './components/Gallery'
@@ -7,12 +7,30 @@ import Review from './components/Review'
 import Form from './components/Form'
 
 export default function Home() {
+  let [state ,setState] = useState();
+  useEffect(async () => {
+    let res = await fetch('https://cfd-reactjs.herokuapp.com/elearning/V4/Home')
+    res = await res.json();
+    setState(res)
+
+
+
+    // fetch('https://cfd-reactjs.herokuapp.com/elearning/V4/Home') 
+    //   .then(res => res.json())
+    //   .then(res =>{
+    //     setState(res)
+    //   })
+  }, [])
+
+
+  if(!state) return <div style={{height :500, display :'flex'}}><div style={{margin :'auto'}}>....loading</div></div>
+
     return (
         <>
         <div className="overlay_nav" />
         <main className="homepage" id="main">
           <Banner />
-          <CourseList />        
+          <CourseList offline={state.offline} online={state.online}/>        
           <Form />
           {/* <section class="section-3">
             <div class="container">
@@ -30,8 +48,8 @@ export default function Home() {
                 </div>
             </div>
         </section> */}
-          <Review />
-          <Gallery />
+          <Review list={state.review} />
+          <Gallery list={state.gallery} />
           <Special />
         </main>
       </>

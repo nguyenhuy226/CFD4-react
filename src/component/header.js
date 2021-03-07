@@ -1,5 +1,7 @@
-import React, { useEffect } from 'react'
-import { Link, useHistory , NavLink} from 'react-router-dom'
+import React, { useEffect, useContext } from 'react'
+import { Link, useHistory, NavLink } from 'react-router-dom'
+import { Context } from '../App';
+import { useAuth } from '../core/hook/useAuth';
 
 
 export default function Header() {
@@ -42,9 +44,11 @@ export default function Header() {
       div.style.transform = `translate(-50%, -50%) scale(${0})`;
     }, 600);
   }
-
+  let context = useContext(Context);
+  let auth = useAuth();
   return (
     <>
+
       <header id="header">
         <div className="wrap">
           <div className="menu-hambeger">
@@ -60,27 +64,30 @@ export default function Header() {
             <h1>CFD</h1>
           </Link>
           <div className="right">
-            {/* <div className="have-login">
-              <div className="account">
-                <a href="#" className="info">
-                  <div className="name">Trần Lê Trọng Nghĩa</div>
-                  <div className="avatar">
-                    <img src="/img/avt.png" alt="" />
-                  </div>
-                </a>
+            {auth.login ? (
+              <div className="have-login">
+                <div className="account">
+                  <a href="#" className="info">
+                    <div className="name">{auth.login.name}</div>
+                    <div className="avatar">
+                      <img src="/img/avt.png" alt="" />
+                    </div>
+                  </a>
+                </div>
+                <div className="hamberger">
+                </div>
+                <div className="sub">
+                  <Link onClick={delayLink} to="/chi-tiết ">Khóa học của tôi</Link>
+                  <Link onClick={delayLink} to="/thông-tin-cá-nhân">Thông tin tài khoản</Link>
+                  <Link onClick={auth.logout} href="javascript : void(0)">Đăng xuất</Link>
+                </div>
               </div>
-              <div className="hamberger">
-              </div>
-              <div className="sub">
-                <Link onClick={delayLink} to="/chi-tiết ">Khóa học của tôi</Link>
-                <Link onClick={delayLink} to="/thông-tin-cá-nhân">Thông tin tài khoản</Link>
-                <Link onClick={delayLink} to="/">Đăng xuất</Link>
-              </div>
-            </div> */}
-            <div class="not-login bg-none">
-              <a href="#" class="btn-register">Đăng nhập</a>
-              <a href="login.html" class="btn main btn-open-login">Đăng ký</a>
-            </div>
+            ) :
+              <div class="not-login bg-none">
+                <a href="#" class="btn-register" onClick={context.openPopupLogin}>Đăng nhập</a>
+                <a href="login.html" class="btn main btn-open-login">Đăng ký</a>
+              </div>}
+
           </div>
         </div>
       </header>

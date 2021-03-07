@@ -1,6 +1,6 @@
 import React from 'react'
 import { Prompt } from 'react-router-dom'
-import useFormValides from '../../../hook/useFormValides'
+import useFormValides from '../../../core/hook/useFormValides'
 
 export default function Info() {
 
@@ -51,6 +51,7 @@ export default function Info() {
               alert('thanh cong')
           }
       }
+ 
     return (
 
         <div className="tab1" style={{ display: 'block' }}>

@@ -23,6 +23,7 @@ export default function useFormValides(initiaValue, validate) {
             if(r.required) {
                 if(!form[i]) {
                     errorObject[i] = message?.[i]?.required || 'truong nay khong duoc de trong'
+                    continue
                 }
             }
             if(r.pattern) {
@@ -33,6 +34,12 @@ export default function useFormValides(initiaValue, validate) {
                 if(!pattern.test(form[i])) {
                     errorObject[i] = message?.[i]?.pattern || 'truong nay khong dung dinh dang'
                 }
+            }
+            if(r.min && form[i]?.length < r.min) {
+                errorObject[i] = message?.[i]?.min || `trường này phải dài hơn ${r.min} ký tự`
+            }
+            if(r.max && form[i]?.length > r.max) {
+                errorObject[i] = message?.[i]?.max || `trường này phải ngắn hơn ${r.max} ký tự`
             }
         }
         setError(errorObject);  
